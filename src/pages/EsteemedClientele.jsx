@@ -5,10 +5,23 @@ import './EsteemedClientele.css';
 const EsteemedClientele = () => {
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
+  const [isMobile, setIsMobile] = useState(false)
   const titleRef = useRef(null)
   const subtitleRef = useRef(null)
   const carouselRef = useRef(null)
   const intervalRef = useRef(null)
+
+  // Check for mobile device
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
   // Sample client logos data - replace with your actual client logos
   const clientLogos = [
@@ -25,12 +38,30 @@ const EsteemedClientele = () => {
 
   ]
 
-  const slidesToShow = 4
+  // Dynamic slides to show based on screen size
+  const getSlidesToShow = () => {
+    if (window.innerWidth <= 360) return 1
+    if (window.innerWidth <= 768) return 2
+    if (window.innerWidth <= 1024) return 3
+    return 4
+  }
+
+  const [slidesToShow, setSlidesToShow] = useState(getSlidesToShow())
+  
+  useEffect(() => {
+    const handleResize = () => {
+      setSlidesToShow(getSlidesToShow())
+    }
+    
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
   const totalSlides = Math.ceil(clientLogos.length / slidesToShow)
 
-  // Auto-play functionality
+  // Auto-play functionality with mobile considerations
   useEffect(() => {
-    if (isAutoPlaying) {
+    if (isAutoPlaying && !isMobile) {
       intervalRef.current = setInterval(() => {
         setCurrentSlide(prev => (prev + 1) % totalSlides)
       }, 4000)
@@ -41,7 +72,7 @@ const EsteemedClientele = () => {
         clearInterval(intervalRef.current)
       }
     }
-  }, [isAutoPlaying, totalSlides])
+  }, [isAutoPlaying, totalSlides, isMobile])
 
   // Animation for title and subtitle on mount ONLY
   useEffect(() => {
@@ -70,14 +101,18 @@ const EsteemedClientele = () => {
 
   const handlePrevSlide = () => {
     setCurrentSlide(prev => prev === 0 ? totalSlides - 1 : prev - 1)
-    setIsAutoPlaying(false)
-    setTimeout(() => setIsAutoPlaying(true), 5000)
+    if (!isMobile) {
+      setIsAutoPlaying(false)
+      setTimeout(() => setIsAutoPlaying(true), 5000)
+    }
   }
 
   const handleNextSlide = () => {
     setCurrentSlide(prev => (prev + 1) % totalSlides)
-    setIsAutoPlaying(false)
-    setTimeout(() => setIsAutoPlaying(true), 5000)
+    if (!isMobile) {
+      setIsAutoPlaying(false)
+      setTimeout(() => setIsAutoPlaying(true), 5000)
+    }
   }
 
   const getCurrentLogos = () => {
@@ -146,8 +181,10 @@ const EsteemedClientele = () => {
                 className={`indicator ${index === currentSlide ? 'active' : ''}`}
                 onClick={() => {
                   setCurrentSlide(index)
-                  setIsAutoPlaying(false)
-                  setTimeout(() => setIsAutoPlaying(true), 5000)
+                  if (!isMobile) {
+                    setIsAutoPlaying(false)
+                    setTimeout(() => setIsAutoPlaying(true), 5000)
+                  }
                 }}
                 aria-label={`Go to slide ${index + 1}`}
               />

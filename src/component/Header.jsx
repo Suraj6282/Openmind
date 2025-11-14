@@ -20,7 +20,8 @@ const Header = () => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex items-center justify-between">
           {/* LEFT – LOGO */}
-          <motion.div
+          <motion.a
+            href="/"
             className="flex items-center space-x-3"
             initial={{ x: -50, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
@@ -34,7 +35,7 @@ const Header = () => {
                 OpenMInd
               </h1>
             </div>
-          </motion.div>
+          </motion.a>
 
           {/* CENTER – NAV (desktop) */}
           {/* <nav className="hidden md:flex space-x-10">
@@ -89,7 +90,7 @@ const Header = () => {
           >
             {/* LET'S TALK */}
             <motion.a
-              href="#contact"
+              href="/contact"
               className="group hidden md:flex items-center space-x-1 text-sm font-medium text-gray-300 hover:text-white cursor-pointer"
               whileHover={{ x: 2 }}
             >
