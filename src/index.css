@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "MyFont";
+  src: local("MyFont"), url("/public/Fonts/orlean-regular.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
