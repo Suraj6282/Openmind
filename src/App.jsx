@@ -4,11 +4,11 @@ import { Route, Router, Routes } from 'react-router-dom'
 import AboutUs from './pages/AboutUs.jsx'
 import GreenLouts from './pages/GreenLouts.jsx'
 import Careers from './pages/Careers.jsx'
-import Hero from './pages/Hero.jsx'
 import Home from './pages/Home.jsx'
 import Contact from './pages/Contact.jsx'
 import Services from './pages/Services.jsx'
 import WorkFolio from './pages/WorkFolio.jsx'
+import NotFound from './pages/NotFound.jsx'
 
 const App = () => {
   return (
@@ -21,7 +21,8 @@ const App = () => {
       <Route path="/careers" element={<Careers />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/services" element={<Services />} />
-      <Route path="/work" element={<WorkFolio />} />
+      {/* 404 Page - Must be last route */}
+      <Route path="*" element={<NotFound />} />
     </Routes>
   )
 }
